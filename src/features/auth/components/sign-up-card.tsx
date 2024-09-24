@@ -17,6 +17,7 @@ interface SignUpCardProps {
 
 export const SignUpCard = ({ setState }: SignUpCardProps) => {
     const { signIn } = useAuthActions();
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -24,15 +25,15 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
     const [error, setError] = useState('');
 
     const onPasswordSignUp = (e: React.FormEvent<HTMLFormElement>) => {
+        setError("")
         e.preventDefault();
-        console.log(password, " ", confirmPassword)
         if(password !== confirmPassword) {
             setError("Passwords do not match")
             return
         }
 
         setPending(true)
-        signIn("password", { email, password, flow: "signUp" })
+        signIn("password", {name, email, password, flow: "signUp" })
             .catch(() => {
                 setError("Something went wrong!")
             })
@@ -62,6 +63,18 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
             <CardContent className="space-y-5 px-0 pb-0">
                 <form className="space-y-2.5" onSubmit={onPasswordSignUp}>
                     <div>
+                        <Label htmlFor="name">Full Name</Label>
+                        <Input
+                            disabled={pending}
+                            placeholder="Name"
+                            value={name}
+                            onChange={(e) => { setName(e.target.value) }}
+                            type="text"
+                            id="name"
+                            required
+                        />
+                    </div>
+                    <div>
                         <Label htmlFor="email">Email</Label>
                         <Input
                             disabled={pending}
@@ -84,7 +97,7 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
                             required
                             id="password"
                         />
-                        <span className="text-xs  text-muted-foreground">Password must include number and special character </span>
+                        <p className="text-xs  text-muted-foreground leading-tight">Password must be atleast 8 characters and also include special characters.</p>
                     </div>
                     <div>
                         <Label htmlFor="confirmPassword">Confirm Password</Label>
