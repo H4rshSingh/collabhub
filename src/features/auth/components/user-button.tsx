@@ -3,7 +3,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useCurrentUser } from "../hooks/use-current-user";
+import { useCurrentUser } from "../api/use-current-user";
 import { Loader, LogOut } from "lucide-react";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useRouter } from "next/navigation";
@@ -21,7 +21,7 @@ export const UserButton = () => {
         return null;
     }
 
-    const { image, name, email } = data;
+    const { image, name } = data;
     const avatarFallback = name!.charAt(0).toUpperCase();
 
     return (
